@@ -90,7 +90,7 @@ Activity 会在进⼊“已恢复”状态时来到前台，然后系统调⽤ o
 
 ⽆论选择在哪个构建事件中执⾏初始化操作，务必使⽤相应的⽣命周期事件来释放资源。如果在 ON_START 事件后初始化某些内容，则在 ON_STOP 事件后释放或终⽌该内容。如果在 ON_RESUME 事件后执⾏初始化操作，则在 ON_PAUSE 事件后释放。
 
-如果有⼀个具有⽣命周期感知能⼒的组件与Activity ⽣命周期相关联，则该组件将收到 ON_RESUME 事件。系统将调⽤经过 @OnLifecycleEvent 注释的⽅法，以使具有⽣命周期感知能⼒的组件可以执⾏“已恢复”状态所需的任何设置代码。
+如果有⼀个具有⽣命周期感知能⼒的组件与Activity ⽣命周期相关联，则该组件将收到 ON_RESUME 事件。系统将调⽤经过 `@OnLifecycleEvent` 注释的⽅法，以使具有⽣命周期感知能⼒的组件可以执⾏“已恢复”状态所需的任何设置代码。
 ```java
 public class CameraComponent implements LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
