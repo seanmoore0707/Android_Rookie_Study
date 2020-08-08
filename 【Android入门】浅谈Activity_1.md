@@ -38,12 +38,12 @@
 在此⽰例中，`<action>`元素指定该 Activity 会发送数据。将`<category>`元素声明为DEFAULT可使 Activity 能够接收启动请求。`<data>`元素指定此Activity可以发送的数据类型。以下代码段展⽰了如何调⽤上述Activity：
 ```
 /** Create the text message with a string */
-Intent sendIntent = new Intent();
-sendIntent.setAction(Intent.ACTION_SEND);
-sendIntent.setType("text/plain");
-sendIntent.putExtra(Intent.EXTRA_TEXT, textMessage);
+    Intent sendIntent = new Intent();
+    sendIntent.setAction(Intent.ACTION_SEND);
+    sendIntent.setType("text/plain");
+    sendIntent.putExtra(Intent.EXTRA_TEXT, textMessage);
 // Start the activity
-startActivity(sendIntent);
+    startActivity(sendIntent);
 ```
 如果打算构建⼀个独⽴的应⽤，不允许其他应⽤激活其 Activity，则不需要任何其他 intent 过滤器。
 #### 声明权限
@@ -94,10 +94,10 @@ Activity 会在进⼊“已恢复”状态时来到前台，然后系统调⽤ o
 如果有⼀个具有⽣命周期感知能⼒的组件与Activity ⽣命周期相关联，则该组件将收到 ON_RESUME 事件。系统将调⽤经过 @OnLifecycleEvent 注释的⽅法，以使具有⽣命周期感知能⼒的组件可以执⾏“已恢复”状态所需的任何设置代码。
 ```
 public class CameraComponent implements LifecycleObserver {
-@OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    public void initializeCamera() {
-        if (camera == null) {
-            getCamera();
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        public void initializeCamera() {
+            if (camera == null) {
+                getCamera();
         }
     }
 ...
@@ -175,10 +175,10 @@ static final String STATE_LEVEL = "playerLevel";
 @Override
 public void onSaveInstanceState(Bundle savedInstanceState) {
 // Save the user's current game state
-   savedInstanceState.putInt(STATE_SCORE, currentScore);
-  savedInstanceState.putInt(STATE_LEVEL, currentLevel);
+    savedInstanceState.putInt(STATE_SCORE, currentScore);
+    savedInstanceState.putInt(STATE_LEVEL, currentLevel);
 // Always call the superclass so it can save the view hierarchy state
-  super.onSaveInstanceState(savedInstanceState);
+    super.onSaveInstanceState(savedInstanceState);
 }
 ```
 **注意：** 当⽤⼾显式关闭 Activity 时，或者在其他情况下调⽤ finish() 时，系统不会调⽤onSaveInstanceState()。
@@ -190,15 +190,15 @@ public void onSaveInstanceState(Bundle savedInstanceState) {
 ```
 @Override
 protected void onCreate(Bundle savedInstanceState) {
-  super.onCreate(savedInstanceState); // Always call the superclass first
+    super.onCreate(savedInstanceState); // Always call the superclass first
 // Check whether we're recreating a previously destroyed instance
-  if (savedInstanceState != null) {
+    if (savedInstanceState != null) {
 // Restore value of members from saved state
-    currentScore = savedInstanceState.getInt(STATE_SCORE);
-    currentLevel = savedInstanceState.getInt(STATE_LEVEL);
-  } else {
+        currentScore = savedInstanceState.getInt(STATE_SCORE);
+        currentLevel = savedInstanceState.getInt(STATE_LEVEL);
+    } else {
 // Probably initialize members with default values for a new instance
-  }
+    }
 // ...
 }
 ```
