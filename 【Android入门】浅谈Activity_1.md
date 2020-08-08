@@ -69,18 +69,18 @@ startActivity(sendIntent);
 当⽤⼾开始离开 Activity 时，系统会调⽤⽅法来销毁该 Activity。**在某些情况下，此销毁只是部分销毁；Activity 仍然驻留在内存中（例如当⽤⼾切换⾄另⼀应⽤时），并且仍然可以返回前台。如果⽤⼾返回该 Activity，则 Activity 会从⽤⼾离开时的位置继续运⾏。**
 
 #### ⽣命周期回调
-##### onCreate()
+#### onCreate()
 必须实现此回调，其在系统⾸次创建 Activity 时触发。Activity 会在创建后进⼊“已创建”状态。在 onCreate() ⽅法中，需执⾏基本应⽤启动逻辑，该逻辑在 Activity 的整个⽣命周期中只应发⽣⼀次。例如，onCreate() 的实现可能会将数据绑定到列表，将 Activity 与 ViewModel 相关联，并实例化某些类范围变量。
 
 此⽅法接收 savedInstanceState 参数 --- 是包含 Activity 先前保存状态的 Bundle 对象。如果Activity 此前未曾存在，则 Bundle 对象的值为 null。
 ![onCreat()方法示例](https://upload-images.jianshu.io/upload_images/6759099-585c318c5b11c246.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 除了定义 XML ⽂件，然后将其传递给 setContentView()，还可以在 Activity 代码中新建 View 对象，并将新建的 View 插⼊到 ViewGroup 中，以构建视图层次结构。然后，将根 ViewGroup 传递给setContentView() 以使⽤该布局。
-##### onStart()
+#### onStart()
 当 Activity 进⼊“已开始”状态时，系统会调⽤此回调。onStart() 调⽤使 Activity 对⽤⼾可⻅，因为应⽤会为 Activity 进⼊前台并⽀持交互做准备。例如，应⽤通过此⽅法来初始化维护界⾯的代码。
 当 Activity 进⼊已开始状态时，与 Activity ⽣命周期相关联的所有具有⽣命周期感知能⼒的组件都将收到 ON_START 事件。
-**onStart() ⽅法会⾮常快速地完成，Activity 不会⼀直处于“已开始”状态。**⼀旦此回调结束，Activity便会进⼊“已恢复”状态，系统将调⽤ onResume() ⽅法。
-##### onResume()
-Activity 会在进⼊“已恢复”状态时来到前台，然后系统调⽤ onResume() 回调。这是应⽤与⽤⼾交互的状态。**应⽤会⼀直保持这种状态，直到某些事件发⽣，让焦点远离应⽤。**此类事件包括接到来电、⽤⼾导航到另⼀个 Activity，或设备屏幕关闭。
+**onStart() ⽅法会⾮常快速地完成，Activity 不会⼀直处于“已开始”状态。** ⼀旦此回调结束，Activity便会进⼊“已恢复”状态，系统将调⽤ onResume() ⽅法。
+#### onResume()
+Activity 会在进⼊“已恢复”状态时来到前台，然后系统调⽤ onResume() 回调。这是应⽤与⽤⼾交互的状态。**应⽤会⼀直保持这种状态，直到某些事件发⽣，让焦点远离应⽤。** 此类事件包括接到来电、⽤⼾导航到另⼀个 Activity，或设备屏幕关闭。
 
 **此时，该 Activity 位于 Activity 堆栈的顶部，并会捕获所有⽤⼾输⼊。**
 当 Activity 进⼊“已恢复”状态时，与 Activity ⽣命周期相关联的所有具有⽣命周期感知能⼒的组件都将收到 ON_RESUME 事件。这时，⽣命周期组件可以启动任何需要在组件可⻅，且位于前台时运⾏的功能。
@@ -103,8 +103,8 @@ public class CameraComponent implements LifecycleObserver {
 ...
 }
 ```
-##### onPause()
-系统将此⽅法视为⽤⼾正在离开Activity 的第⼀个标志（尽管这并不总是意味着活动正在遭到销毁）；**此⽅法表⽰ Activity 不再位于前台**（尽管如果⽤⼾处于多窗⼝模式，Activity 仍然可⻅）。
+#### onPause()
+系统将此⽅法视为⽤⼾正在离开Activity 的第⼀个标志（尽管这并不总是意味着活动正在遭到销毁）；**此⽅法表⽰ Activity 不再位于前台** （尽管如果⽤⼾处于多窗⼝模式，Activity 仍然可⻅）。
 
 Activity 进⼊此状态有多个原因，例如：
 1. 某个事件会中断应⽤执⾏。这是最常⻅的情况。
@@ -117,7 +117,7 @@ Activity 进⼊此状态有多个原因，例如：
 完成 onPause() ⽅法并不意味着 Activity 离开“已暂停”状态。相反，Activity 会保持此状态，直到其恢复或变成对⽤⼾完全不可⻅:
 1. 如果 Activity 恢复，系统将再次调⽤ onResume() 回调。如果 Activity 从“已暂停”状态返回“已恢复”状态，则系统会让 Activity 实例继续驻留在内存中，并会在系统调⽤ onResume() 时重新调⽤该实例。在这种情况下，⽆需重新初始化在回调⽅法导致 Activity 进⼊“已恢复”状态期间创建的组件。
 2. 如果 Activity 变为完全不可⻅，则系统会调⽤ onStop()。
-##### onStop()
+#### onStop()
 如果Activity 不再对⽤⼾可⻅，则说明其已进⼊"已停⽌"状态，因此系统将调⽤ onStop() 回调。如果新启动的 Activity 覆盖整个屏幕，就可能会发⽣这种情况。
 
 当 Activity 进⼊已停⽌状态时，与 Activity ⽣命周期相关联的所有具有⽣命周期感知能⼒的组件都将收到 ON_STOP 事件。这时，⽣命周期组件可以停⽌任何⽆需在组件未在屏幕上可⻅时运⾏的功能。
@@ -126,14 +126,14 @@ Activity 进⼊此状态有多个原因，例如：
 ![onStop()方法示例](https://upload-images.jianshu.io/upload_images/6759099-a1a5786e315fc977.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 当Activity 进⼊“已停⽌”状态时，Activity 对象会继续驻留在内存中：该对象将维护所有状态和成员信息，但不会附加到窗⼝管理器。状态恢复后，Activity 会重新调⽤这些信息。⽆需重新初始化在回调⽅法导致 Activity 进⼊“已恢复”状态期间创建的组件。系统还会追踪布局中每个 View 对象的当前状态，如果⽤⼾在 EditText 微件中输⼊⽂本，系统将保留⽂本内容，因此⽆需保存和恢复⽂本。
 
-**注意：**Activity 停⽌后，如果系统需要恢复内存，则可能会销毁包含该 Activity 的进程。即使系统在Activity 停⽌后销毁相应进程，系统仍会保留 Bundle（键值对的 blob）中的 View 对象（例如EditText 微件中的⽂本）的状态，并在⽤⼾返回 Activity 时恢复这些对象。
+**注意：** Activity 停⽌后，如果系统需要恢复内存，则可能会销毁包含该 Activity 的进程。即使系统在Activity 停⽌后销毁相应进程，系统仍会保留 Bundle（键值对的 blob）中的 View 对象（例如EditText 微件中的⽂本）的状态，并在⽤⼾返回 Activity 时恢复这些对象。
 进⼊“已停⽌”状态后，Activity 要么返回与⽤⼾交互，要么结束运⾏并消失。如果 Activity 返回，系统将调⽤ onRestart() ⽅法。如果 Activity 结束运⾏，系统将调⽤ onDestroy()。
 
-##### onRestart()
+#### onRestart()
 当处于“已停⽌”状态的 Activity 即将重启时，系统就会调⽤此回调。 onRestart() 会从 Activity停⽌时的状态恢复 Activity。
 此回调后⾯总是跟着 onStart() 。
 
-##### onDestroy()
+#### onDestroy()
 销毁 Activity 之前，系统会先调⽤ onDestroy()。
 系统调⽤此回调的原因如下：
 1. Activity 正在结束（由于⽤⼾彻底关闭 Activity 或由于系统为 Activity 调⽤ finish()）
@@ -145,14 +145,14 @@ Activity 进⼊此状态有多个原因，例如：
 
 如果 Activity 正在结束，则 onDestroy() 是 Activity 收到的最后⼀个⽣命周期回调。
 如果由于配置变更⽽调⽤ onDestroy()，则系统会⽴即新建 Activity 实例，然后在新配置中为新实例调⽤ onCreate()。
-onDestroy() 回调应**释放**先前的回调（例如 onStop()）尚未释放的所有资源。
+onDestroy() 回调应 **释放** 先前的回调（例如 onStop()）尚未释放的所有资源。
 
 ## Activity 状态和从内存中弹出
 系统会在需要释放内存时终⽌进程；系统终⽌给定进程的可能性取决于当时进程的状态。反之，进程状态则取决于在进程中运⾏的 Activity 的状态。
 ![进程⽣命周期和 Activity 状态之间的关系](https://upload-images.jianshu.io/upload_images/6759099-d1b58e13984c811b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 系统永远不会直接终⽌ Activity 以释放内存，⽽是会终⽌ Activity 所在的进程。系统不仅会销毁 Activity，还会销毁在该进程中运⾏的所有其他内容。
 #### 保存和恢复界⾯瞬态
-⽤⼾期望 Activity 的界⾯状态在整个配置变更（例如旋转或切换到多窗⼝模式）期间保持不变。然⽽，**发⽣此类配置变更时，系统会默认销毁 Activity，从⽽消除存储在 Activity 实例中的所有界⾯状态。**同样，如果⽤⼾暂时从应⽤切换到其他应⽤，并在稍后返回应⽤，他们也希望界⾯状态保持不变。但是，当⽤⼾离开应⽤且Activity 停⽌时，系统可能会销毁应⽤的进程。
+⽤⼾期望 Activity 的界⾯状态在整个配置变更（例如旋转或切换到多窗⼝模式）期间保持不变。然⽽，**发⽣此类配置变更时，系统会默认销毁 Activity，从⽽消除存储在 Activity 实例中的所有界⾯状态。** 同样，如果⽤⼾暂时从应⽤切换到其他应⽤，并在稍后返回应⽤，他们也希望界⾯状态保持不变。但是，当⽤⼾离开应⽤且Activity 停⽌时，系统可能会销毁应⽤的进程。
 
 当 Activity 因系统限制遭到销毁时，应组合使⽤ ViewModel、onSaveInstanceState() 和/或本地存储来保留⽤⼾的界⾯瞬态。
 如果界⾯数据简单且轻量，例如原始数据类型或简单对象（⽐如 String），则可以单独使⽤
@@ -161,9 +161,9 @@ onSaveInstanceState() 使界⾯状态在配置更改和系统启动的进程遭�
 在某些情况下，Activity 会因正常的应⽤⾏为⽽遭到销毁，例如当⽤⼾按下“返回”按钮或Activity 通过调⽤ finish() ⽅法发出销毁信号时。当Activity 因⽤⼾按下“返回”按钮或因其⾃⾏结束⽽遭到销毁时，系统和⽤⼾对该 Activity 实例的概念将永远消失。在这些情况下，⽤⼾的期望与系统⾏为相匹配，⽆需完成任何额外⼯作。
 但是，如果系统因系统约束（例如配置变更或内存压⼒）⽽销毁 Activity，则虽然实际的 Activity 实例已消失，但系统会记住它曾经存在过。如果⽤⼾尝试回退到该 Activity，则系统将使⽤⼀组描述Activity 销毁时状态的已保存数据新建该 Activity 的实例。
 
-系统⽤于恢复先前状态的已保存数据称为**“实例状态”**，是存储在 Bundle 对象中的键值对集合。默认情况下，系统使⽤ Bundle 实例状态来保存 Activity 布局中每个 View 对象的相关信息（例如在 EditText 微件中输⼊的⽂本值）。这样，如果Activity 实例被销毁并重新创建，布局状态便会恢复为其先前的状态，且⽆需编写代码。
+系统⽤于恢复先前状态的已保存数据称为 **“实例状态”** ，是存储在 Bundle 对象中的键值对集合。默认情况下，系统使⽤ Bundle 实例状态来保存 Activity 布局中每个 View 对象的相关信息（例如在 EditText 微件中输⼊的⽂本值）。这样，如果Activity 实例被销毁并重新创建，布局状态便会恢复为其先前的状态，且⽆需编写代码。
 
-**注意：**为了使 Android 系统恢复 Activity 中视图的状态，每个视图必须具有 android:id 属性提供的唯⼀ ID。
+**注意：** 为了使 Android 系统恢复 Activity 中视图的状态，每个视图必须具有 android:id 属性提供的唯⼀ ID。
 Bundle 对象并不适合保留⼤量数据，因为它需要在主线程上进⾏序列化处理并占⽤系统进程内存。如果不是要保留少量的数据，正如保存界⾯状态所述，应该组合使⽤ persistent local storage(比如SharedPreferences), onSaveInstanceState() 和 ViewModel类。
 
 #### 使⽤ onSaveInstanceState() 保存简单轻量的界⾯状态
@@ -181,7 +181,7 @@ public void onSaveInstanceState(Bundle savedInstanceState) {
   super.onSaveInstanceState(savedInstanceState);
 }
 ```
-**注意：**当⽤⼾显式关闭 Activity 时，或者在其他情况下调⽤ finish() 时，系统不会调⽤onSaveInstanceState()。
+**注意：** 当⽤⼾显式关闭 Activity 时，或者在其他情况下调⽤ finish() 时，系统不会调⽤onSaveInstanceState()。
 如要保存持久化数据（例如⽤⼾⾸选项或数据库中的数据），应在 Activity 位于前台时抓住合适机会。如果没有这样的时机，应在执⾏ onStop() ⽅法期间保存此类数据。
 #### 使⽤保存的实例状态恢复 Activity 界⾯状态
 重建之前遭到销毁的 Activity 后，可以从系统传递给 Activity 的 Bundle 中恢复保存的实例状态。onCreate() 和 onRestoreInstanceState() 回调⽅法均会收到包含实例状态信息的相同 Bundle。
@@ -212,7 +212,7 @@ public void onRestoreInstanceState(Bundle savedInstanceState) {
     currentLevel = savedInstanceState.getInt(STATE_LEVEL);
 }
 ```
-**注意：**应始终调⽤ onRestoreInstanceState() 的⽗类实现，以便默认实现可以恢复视图层次结构的状态。
+**注意：** 应始终调⽤ onRestoreInstanceState() 的⽗类实现，以便默认实现可以恢复视图层次结构的状态。
 
 ## 处理 Activity 状态更改
 ⽤⼾触发和系统触发的不同事件会导致 Activity 从⼀个状态转换到另⼀个状态。
@@ -225,7 +225,7 @@ public void onRestoreInstanceState(Bundle savedInstanceState) {
 当被覆盖的 Activity 返回到前台并重新获得焦点时，会调⽤ onResume() 。
 如果有新的 Activity 或对话框出现在前台，夺取了焦点且完全覆盖了正在进⾏的 Activity，则被覆盖的 Activity 会失去焦点并进⼊“已停⽌”状态。然后，系统会快速接连调⽤ onPause() 和 onStop() 。
 当被覆盖的 Activity 的同⼀实例返回前台时，系统会对该 Activity 调⽤ onRestart() 、 onStart() 和 onResume() 。如果被覆盖的 Activity 的新实例进⼊后台，则系统不会调⽤ onRestart()，⽽只会调⽤ onStart() 和 onResume() 。
-**注意：**当⽤⼾点按“概览”或主屏幕按钮时，系统的⾏为就好像当前 Activity 已被完全覆盖⼀样。
+**注意：** 当⽤⼾点按“概览”或主屏幕按钮时，系统的⾏为就好像当前 Activity 已被完全覆盖⼀样。
 #### ⽤⼾点按“返回”按钮
 如果 Activity 位于前台，并且⽤⼾点按了返回按钮，Activity 将依次经历 onPause() 、 onStop() 和 onDestroy() 回调。活动不仅会被销毁，还会从返回堆栈中移除。
 需要注意的是，在这种情况下，默认不会触发 onSaveInstanceState() 回调。此⾏为基于的假设是，⽤⼾点按“返回”按钮时不期望返回 Activity 的同⼀实例。不过，可以通过替换 onBackPressed() ⽅法实现某种⾃定义⾏为，例如“confirm-quit”对话框。
