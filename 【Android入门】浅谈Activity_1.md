@@ -7,7 +7,7 @@
 
 #### 声明 Activity
 要声明 Activity，请打开清单⽂件，并添加 `<activity>` 元素作为 `<application>` 元素的⼦元素。例如：
-```
+```xml
 <manifest ... >
     <application ... >
         <activity android:name=".ExampleActivity" />
@@ -26,7 +26,7 @@
 
 要使⽤此功能，需要在`<activity>`元素中声明`<intent-filter>`属性。此元素的定义包括`<action>`元素，以及可选的`<category>`元素和/或`<data>`元素。这些元素组合在⼀起，可以指定 Activity 能够响应的 intent 类型。
 例如，以下代码段展⽰了如何配置⼀个发送⽂本数据并接收其他 Activity 的⽂本数据发送请求的 Activity：
-```
+```xml
 <activity android:name=".ExampleActivity"android:icon="@drawable/app_icon">
     <intent-filter>
             <action android:name="android.intent.action.SEND" />
@@ -36,7 +36,7 @@
 </activity>
 ```
 在此⽰例中，`<action>`元素指定该 Activity 会发送数据。将`<category>`元素声明为DEFAULT可使 Activity 能够接收启动请求。`<data>`元素指定此Activity可以发送的数据类型。以下代码段展⽰了如何调⽤上述Activity：
-```
+```java
 /** Create the text message with a string */
     Intent sendIntent = new Intent();
     sendIntent.setAction(Intent.ACTION_SEND);
@@ -50,13 +50,13 @@
 可以使⽤清单的`<activity>`标记来控制哪些应⽤可以启动某个 Activity。⽗ Activity 和⼦ Activity 必须在其清单中具有相同的权限，前者才能启动后者。如果为⽗ Activity 声明了`<uses-permission>`元素，则每个⼦ Activity 都必须具有匹配的`<uses-permission>`元素。
 
 例如，假设应⽤想要使⽤⼀个名为 SocialApp 的应⽤在社交媒体上分享⽂章，则 SocialApp 本⾝必须定义调⽤它的应⽤所需具备的权限：
-```
+```xml
 <manifest>
     <activity android:name="...."
         android:permission=”com.google.socialapp.permission.SHARE_POST”/>
 ```
 然后，为了能够调⽤ SocialApp，应⽤必须匹配 SocialApp 清单中设置的权限：
-```
+```xml
 <manifest>
     <uses-permission    android:name="com.google.socialapp.permission.SHARE_POST"/>
 </manifest>
@@ -92,7 +92,7 @@ Activity 会在进⼊“已恢复”状态时来到前台，然后系统调⽤ o
 ⽆论选择在哪个构建事件中执⾏初始化操作，务必使⽤相应的⽣命周期事件来释放资源。如果在 ON_START 事件后初始化某些内容，则在 ON_STOP 事件后释放或终⽌该内容。如果在 ON_RESUME 事件后执⾏初始化操作，则在 ON_PAUSE 事件后释放。
 
 如果有⼀个具有⽣命周期感知能⼒的组件与Activity ⽣命周期相关联，则该组件将收到 ON_RESUME 事件。系统将调⽤经过 @OnLifecycleEvent 注释的⽅法，以使具有⽣命周期感知能⼒的组件可以执⾏“已恢复”状态所需的任何设置代码。
-```
+```java
 public class CameraComponent implements LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
         public void initializeCamera() {
@@ -169,7 +169,7 @@ Bundle 对象并不适合保留⼤量数据，因为它需要在主线程上进�
 #### 使⽤ onSaveInstanceState() 保存简单轻量的界⾯状态
 当Activity 开始停⽌时，系统会调⽤ onSaveInstanceState() ⽅法，以便 Activity 可以将状态信息保存到实例状态 Bundle 中。此⽅法的默认实现保存有关 Activity 视图层次结构状态的瞬态信息。
 如要保存 Activity 的其他实例状态信息，必须替换 onSaveInstanceState()，并将键值对添加到Activity 意外销毁时所保存的 Bundle 对象中。替换 onSaveInstanceState() 时，如果希望默认实现保存视图层次结构的状态，则必须调⽤⽗类实现。例如：
-```
+```java
 static final String STATE_SCORE = "playerScore";
 static final String STATE_LEVEL = "playerLevel";
 @Override
@@ -187,7 +187,7 @@ public void onSaveInstanceState(Bundle savedInstanceState) {
 重建之前遭到销毁的 Activity 后，可以从系统传递给 Activity 的 Bundle 中恢复保存的实例状态。onCreate() 和 onRestoreInstanceState() 回调⽅法均会收到包含实例状态信息的相同 Bundle。
 因为⽆论系统是新建 Activity 实例还是重新创建之前的实例，都会调⽤ onCreate() ⽅法，所以在尝试读取之前，必须检查状态 Bundle 是否为 null。如果为 null，系统将新建 Activity 实例，⽽不会恢复之前销毁的实例。
 例如，以下代码段显⽰如何在 onCreate() 中恢复某些状态数据：
-```
+```java
 @Override
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState); // Always call the superclass first
@@ -203,7 +203,7 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 可以选择实现系统在 onStart() ⽅法之后调⽤的 onRestoreInstanceState()，⽽不是在 onCreate()期间恢复状态。仅当存在要恢复的已保存状态时，系统才会调⽤ onRestoreInstanceState()，因此⽆需检查 Bundle 是否为 null：
-```
+```java
 public void onRestoreInstanceState(Bundle savedInstanceState) {
 // Always call the superclass so it can restore the view hierarchy
     super.onRestoreInstanceState(savedInstanceState);
