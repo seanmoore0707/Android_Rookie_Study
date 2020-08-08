@@ -19,8 +19,7 @@
 此元素唯⼀的必要属性是 `android:name`，该属性⽤于指定 Activity 的类名称。也可以添加⽤于定义标签、图标或界⾯主题等 Activity 特征的属性。
 **注意：** 发布应⽤后，就不应再更改 Activity 名称，否则可能会破坏某些功能，例如应⽤快捷⽅式。
 #### 声明 intent 过滤器
-[Intent过滤器]([https://developer.android.com/guide/components/intents-filters.html](https://developer.android.com/guide/components/intents-filters.html)
-)是 Android 平台的⼀项⾮常强⼤的功能。借助这项功能，不但可以根据显式请求启动 Activity，还可以根据隐式请求启动 Activity。
+[Intent过滤器](https://developer.android.com/guide/components/intents-filters.html) 是 Android 平台的⼀项⾮常强⼤的功能。借助这项功能，不但可以根据显式请求启动 Activity，还可以根据隐式请求启动 Activity。
 
 例如，显式请求可能会告诉系统“在 Gmail 应⽤中启动‘发送电⼦邮件’Activity”，⽽隐式请求可能会告诉系统“在**任何能够完成此⼯作的 Activity** 中启动‘发送电⼦邮件’屏幕”。当系统界⾯询问⽤⼾使⽤哪个应⽤来执⾏任务时，这就是 intent 过滤器在起作⽤。
 
